@@ -1,18 +1,87 @@
-import Image from "next/image";
-import Link from "next/link";
+"use client"; // Required for React state in Next.js 13+ app directory
+import { useState } from "react";
+import ExpenseForm from "../components/ExpenseForm";
+import ExpensesTable from "@/components/ExpenseTable";
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState("dashboard");
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "dashboard":
+        return (
+          <div>
+            <div className="p-6">
+              <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+
+              {/* Expenses Table */}
+              <ExpensesTable />
+            </div>
+          </div>
+        );
+      case "expenses":
+        return (
+          <div>
+            <div>
+              <ExpenseForm />
+            </div>
+
+            <div className="p-6">
+              <h1 className="text-xl font-bold mb-6">Dashboard</h1>
+
+              {/* Expenses Table */}
+              <ExpensesTable />
+            </div>
+          </div>
+        );
+      case "profile":
+        return <div>Profile Content</div>;
+      default:
+        return <div>Select a tab</div>;
+    }
+  };
+
   return (
-    <>
-    <div className="flex flex-col items-center justify-center bg-gray-100 min-h-[70vh]">
-      <h1 className="text-7xl font-bold">Welcome to Spendwise</h1>
-      <p className="mt-4 text-lg">Your one-stop solution for managing expenses.</p>
-      <Link href="/register"><button className="mt-8 px-8 py-4 bg-gray-800 text-white rounded-full font-medium text-2xl hover:bg-gray-900 transition duration-200">Get Started</button></Link>
+    <div className="flex min-h-screen">
+      {/* Sidebar */}
+      <div className="w-1/4 bg-gray-100 border-r border-gray-300 p-6 flex flex-col">
+        <h2 className="text-xl font-bold mb-6">Menu</h2>
+        <ul className="flex flex-col space-y-4">
+          <li>
+            <button
+              className={`w-full text-left px-4 py-2 rounded duration-100 ${
+                activeTab === "dashboard" ? "bg-gray-200" : "hover:bg-gray-200"
+              }`}
+              onClick={() => setActiveTab("dashboard")}
+            >
+              Dashboard
+            </button>
+          </li>
+          <li>
+            <button
+              className={`w-full text-left px-4 py-2 rounded duration-100 ${
+                activeTab === "expenses" ? "bg-gray-200" : "hover:bg-gray-200"
+              }`}
+              onClick={() => setActiveTab("expenses")}
+            >
+              Expenses
+            </button>
+          </li>
+          <li>
+            <button
+              className={`w-full text-left px-4 py-2 rounded duration-100 ${
+                activeTab === "profile" ? "bg-gray-200" : "hover:bg-gray-200"
+              }`}
+              onClick={() => setActiveTab("profile")}
+            >
+              Profile
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      {/* Content Area */}
+      <div className="flex-1 p-8">{renderContent()}</div>
     </div>
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-300">
-      <h2 className="text-5xl font-bold">Get your spendings right!</h2>
-      <p className="mt-4 text-lg">Join us to make the most of your money.</p>
-    </div>
-    </>
   );
 }

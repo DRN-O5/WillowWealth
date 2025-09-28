@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Trekka",
+  title: "Expense Tracker",
   description: "A modern expense tracker",
 };
 
@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
       >
         <Navbar />
         {children}
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );
