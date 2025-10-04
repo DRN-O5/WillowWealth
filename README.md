@@ -1,8 +1,6 @@
 <h1>WillowWealth</h1>
 <br />
-<br />
 Working in Progress
-<br />
 <br />
 <p>Created using Next.js, Tailwind, Rechart, MySQL.</p>
 <br />
