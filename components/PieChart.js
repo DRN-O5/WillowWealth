@@ -1,0 +1,53 @@
+import React from 'react'
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+const data = [
+  { name: 'Group A', value: 400 },
+  { name: 'Group B', value: 300 },
+  { name: 'Group C', value: 300 },
+  { name: 'Group D', value: 200 },
+];
+
+const COLORS = ['#0a51ad', '#32a8a2', '#d11919', '#f9c74f'];
+
+const PieChartComponent = () => {
+  return (
+    <div className="bg-gray-950 p-4 rounded-lg shadow-lg shadow-green-900/40 border border-green-400/30 w-[400px]">
+      <ResponsiveContainer width="100%" height={300}>
+        <PieChart>
+          <Pie
+            data={data}
+            cx="50%"
+            cy="50%"
+            innerRadius={60}
+            outerRadius={80}
+            fill="#8884d8"
+            paddingAngle={5}
+            dataKey="value"
+          >
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip content={<CustomTooltip />} isAnimationActive={false} />
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  )
+}
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-gray-800 text-white p-2 rounded border border-green-400/40">
+        <p className="font-bold">{label}</p>
+        <p>Value: {payload[0].value}</p>
+      </div>
+    );
+  }
+
+  return null;
+};
+
+export default PieChartComponent;

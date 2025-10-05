@@ -10,10 +10,34 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleLogin = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    console.log("Username:", username, "Password:", password, "Email:", email);
-    // Add API call / auth logic here
+
+    try {
+      // Step 1: Register user
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      if (res.ok) {
+        // Step 2: Auto-login after successful registration
+        await signIn("credentials", {
+          redirect: true,
+          username,
+          email,
+          password,
+          callbackUrl: "/", // redirect to home/dashboard
+        });
+      } else {
+        const data = await res.json();
+        alert(data.message || "Failed to register");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong!");
+    }
   };
 
   return (
@@ -21,11 +45,11 @@ const Signin = () => {
       <div className="w-full max-w-md bg-gray-950/90 border border-green-400/30 shadow-lg shadow-green-900/40 rounded-2xl p-8">
         {/* Heading */}
         <h2 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-green-400 to-emerald-300 bg-clip-text text-transparent">
-          Sign In
+          Sign Up
         </h2>
 
-        {/* Normal login form */}
-        <form onSubmit={handleLogin} className="space-y-5">
+        {/* Register Form */}
+        <form onSubmit={handleRegister} className="space-y-5">
           <div>
             <label className="block text-sm font-medium text-gray-200 mb-1">Username</label>
             <input
@@ -66,13 +90,13 @@ const Signin = () => {
             type="submit"
             className="w-full px-6 py-2 rounded-lg border border-green-400/40 text-white bg-gray-900 hover:bg-gray-800 hover:border-green-400 hover:shadow-[0_0_10px_rgba(34,197,94,0.6)] hover:scale-105 transition-all duration-200 font-medium cursor-pointer"
           >
-            Sign In
+            Sign Up
           </button>
 
           <div className="text-center mt-3 text-sm text-gray-400">
-            New here?{" "}
-            <Link href="/signup" className="text-green-400 hover:underline">
-              Create an account
+            Already have an account?{" "}
+            <Link href="/login" className="text-green-400 hover:underline">
+              Log in
             </Link>
           </div>
         </form>

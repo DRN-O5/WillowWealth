@@ -1,5 +1,8 @@
 "use client";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Bounce } from "react-toastify";
 
 export default function ExpensesForm() {
   const [formData, setFormData] = useState({
@@ -10,7 +13,13 @@ export default function ExpensesForm() {
   });
 
   const transactionTypes = ["Misc", "Luxury", "Food", "Transport"];
-  const paymentMethods = ["Bank Transfer", "UPI", "Cash", "Debit Card", "Credit Card"];
+  const paymentMethods = [
+    "Bank Transfer",
+    "UPI",
+    "Cash",
+    "Debit Card",
+    "Credit Card",
+  ];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,13 +34,22 @@ export default function ExpensesForm() {
         body: JSON.stringify(formData),
       });
       if (res.ok) {
-        alert("Expense saved!");
-        setFormData({ description: "", transactionType: "", paymentMethod: "", amount: "" });
+        toast.success("Expense added!");
+        setFormData({
+          description: "",
+          transactionType: "",
+          paymentMethod: "",
+          amount: "",
+        });
       } else {
-        alert("Error saving expense");
+        toast.error("Error saving expense");
       }
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong! ❌", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
   };
 
@@ -41,13 +59,12 @@ export default function ExpensesForm() {
         Add Expense
       </h2>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-wrap gap-6 items-end"
-      >
+      <form onSubmit={handleSubmit} className="flex flex-wrap gap-6 items-end">
         {/* Description */}
         <div className="flex-1 min-w-[200px]">
-          <label className="block mb-2 font-medium text-gray-200">Purchase Description</label>
+          <label className="block mb-2 font-medium text-gray-200">
+            Purchase Description
+          </label>
           <input
             type="text"
             name="description"
@@ -61,7 +78,9 @@ export default function ExpensesForm() {
 
         {/* Amount */}
         <div className="w-40">
-          <label className="block mb-2 font-medium text-gray-200">Amount (INR)</label>
+          <label className="block mb-2 font-medium text-gray-200">
+            Amount (INR)
+          </label>
           <input
             type="number"
             name="amount"
@@ -75,7 +94,9 @@ export default function ExpensesForm() {
 
         {/* Transaction Type */}
         <div className="flex-1 min-w-[150px]">
-          <label className="block mb-2 font-medium text-gray-200">Transaction Type</label>
+          <label className="block mb-2 font-medium text-gray-200">
+            Transaction Type
+          </label>
           <select
             name="transactionType"
             value={formData.transactionType}
@@ -85,7 +106,11 @@ export default function ExpensesForm() {
           >
             <option value="">Select type</option>
             {transactionTypes.map((type) => (
-              <option key={type} value={type} className="bg-gray-800 text-white">
+              <option
+                key={type}
+                value={type}
+                className="bg-gray-800 text-white"
+              >
                 {type}
               </option>
             ))}
@@ -94,7 +119,9 @@ export default function ExpensesForm() {
 
         {/* Payment Method */}
         <div className="flex-1 min-w-[150px]">
-          <label className="block mb-2 font-medium text-gray-200">Payment Method</label>
+          <label className="block mb-2 font-medium text-gray-200">
+            Payment Method
+          </label>
           <select
             name="paymentMethod"
             value={formData.paymentMethod}
@@ -104,7 +131,11 @@ export default function ExpensesForm() {
           >
             <option value="">Select method</option>
             {paymentMethods.map((method) => (
-              <option key={method} value={method} className="bg-gray-800 text-white">
+              <option
+                key={method}
+                value={method}
+                className="bg-gray-800 text-white"
+              >
                 {method}
               </option>
             ))}
@@ -121,6 +152,19 @@ export default function ExpensesForm() {
           </button>
         </div>
       </form>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        theme="dark"
+        transition={Bounce}
+      />
     </div>
   );
 }
