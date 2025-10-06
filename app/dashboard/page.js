@@ -9,9 +9,10 @@ import ProfileTab from "@/components/ProfileTab";
 import { Area } from "recharts";
 import AreaChartComponent from "@/components/AreaChart";
 import PieChartComponent from "@/components/PieChart";
+import LineChartComponent from "@/components/LineChart";
 
 const dashboard = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [activeTab, setActiveTab] = useState("dashboard");
 
   const renderContent = () => {
@@ -20,10 +21,14 @@ const dashboard = () => {
         return (
           <div>
             <div className="p-6">
-              <h1 className="text-3xl font-bold mb-6 text-white">Dashboard</h1>
+              <h1 className="text-3xl font-bold mb-6 text-green-400">Dashboard</h1>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <AreaChartComponent />
-                <div><PieChartComponent /></div>
+                <PieChartComponent />
+                <LineChartComponent />
+              </div>
+              <div>
+                <ExpensesTable />
               </div>
             </div>
           </div>
@@ -48,7 +53,7 @@ const dashboard = () => {
       <div className="mt-18">
         <div className="flex min-h-screen">
           {/* Sidebar */}
-          <div className="w-1/5 bg-gray-900 border-r border-gray-700 p-6 flex flex-col text-white sticky top-0">
+          <div className="w-1/5 bg-gray-900 border-r border-gray-700 p-6 flex flex-col text-white">
             <h2 className="text-xl font-bold mb-6 ml-4">Menu</h2>
             <ul className="flex flex-col space-y-4">
               <li>

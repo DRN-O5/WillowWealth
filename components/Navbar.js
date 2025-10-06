@@ -13,7 +13,7 @@ const Navbar = () => {
       <div className="transition-transform hover:scale-105">
         <Link href="/">
           <h1 className="font-bold text-2xl tracking-wide cursor-pointer bg-gradient-to-r from-green-400 to-emerald-300 bg-clip-text text-transparent">
-            Expense Tracker
+            WillowWealth
           </h1>
         </Link>
       </div>

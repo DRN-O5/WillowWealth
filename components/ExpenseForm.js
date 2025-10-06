@@ -7,8 +7,8 @@ import { Bounce } from "react-toastify";
 export default function ExpensesForm() {
   const [formData, setFormData] = useState({
     description: "",
-    transactionType: "",
-    paymentMethod: "",
+    transaction_type: "",
+    payment_method: "",
     amount: "",
   });
 
