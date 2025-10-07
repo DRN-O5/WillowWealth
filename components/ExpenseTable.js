@@ -67,7 +67,7 @@ export default function ExpensesTable() {
       </h2>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {expenses.map((expense) => (
+        {expenses.slice(0,9).map((expense) => (
           <div
             key={expense.id}
             className="bg-gray-900/70 border border-green-400/30 rounded-xl p-5 hover:border-green-400 hover:shadow-[0_0_15px_rgba(34,197,94,0.4)] transition-all duration-200"
