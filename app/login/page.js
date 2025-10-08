@@ -12,7 +12,6 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     console.log("Email:", email, "Password:", password);
-    // Add API call / auth logic here
   };
 
   return (

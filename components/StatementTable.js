@@ -80,7 +80,7 @@ export default function StatementTable() {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((tx) => (
+            {currentData.map((tx) => (
               <tr
                 key={tx.id}
                 className="border-b border-green-400/10 hover:bg-gray-900/50 transition"
