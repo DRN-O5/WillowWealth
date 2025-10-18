@@ -50,6 +50,7 @@ const handler = NextAuth({
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
     // Attach DB user_id to session
