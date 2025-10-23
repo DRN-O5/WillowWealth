@@ -6,7 +6,7 @@ export default function StatementTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 15;
   const [currentPage, setCurrentPage] = useState(1);
 
   // Fetch data

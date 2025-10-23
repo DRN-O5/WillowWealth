@@ -23,7 +23,7 @@ export async function POST(req) {
     }
 
     await db.execute(
-      "INSERT INTO users (username, email, password, mobile) VALUES (?, ?, ?, ?)",
+      "INSERT INTO users (username, email, password_hash, mobile) VALUES (?, ?, ?, ?)",
       [username, email, hashedPassword, ""]
     );
 

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
-// 🟩 GET /api/expenses
+
 export async function GET() {
   try {
     const [rows] = await db.query(`SELECT * FROM expenses ORDER BY date DESC`);
@@ -12,14 +12,14 @@ export async function GET() {
   }
 }
 
-// 🟩 POST /api/expenses
+
 export async function POST(request) {
   try {
     const body = await request.json();
 
     const { description, transactionType, paymentMethod, amount } = body;
 
-    // Validate input
+
     if (!description || !transactionType || !paymentMethod || !amount) {
       return NextResponse.json(
         { error: "All fields are required" },
@@ -27,12 +27,12 @@ export async function POST(request) {
       );
     }
 
-    // 🕒 Compute current date & day in Indian timezone
+    
     const now = new Date();
     const istDate = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
-    const dayName = istDate.toLocaleString("en-IN", { weekday: "long", timeZone: "Asia/Kolkata" }); // e.g. "Monday"
+    const dayName = istDate.toLocaleString("en-IN", { weekday: "long", timeZone: "Asia/Kolkata" });
 
-    // 🧾 Insert into DB (including new `day` column)
+   
     const [result] = await db.query(
       `INSERT INTO expenses 
         (description, transaction_type, payment_method, amount, date, day)

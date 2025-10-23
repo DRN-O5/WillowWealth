@@ -25,7 +25,8 @@ const LineChartComponent = () => {
   }, []);
   
   return (
-    <div className="bg-gray-950 p-4 rounded-lg shadow-lg shadow-green-900/40 w-[69.45vw] border border-green-400/30">
+    <div className="bg-gray-950 p-4 rounded-lg shadow-lg shadow-green-900/40 w-full border border-green-400/30">
+      <h1 className="flex justify-center items-center text-2xl font-semibold mb-3 bg-gradient-to-r from-green-400 to-emerald-300 bg-clip-text text-transparent">Monthly Transaction</h1>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
           width={500}

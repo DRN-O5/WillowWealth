@@ -1,5 +1,5 @@
 // app/api/profile/route.js
-import mysql from "mysql2/promise";
+import mysql, { format } from "mysql2/promise";
 
 export async function POST(req) {
   try {
@@ -26,17 +26,19 @@ export async function POST(req) {
 
     if (existingUser.length > 0) {
       // Update existing user
+      const formattedMobile = mobile.startsWith("+91") ? mobile : `+91${mobile}`;
       await db.execute(
         "UPDATE users SET username = ?, mobile = ? WHERE email = ?",
-        [username, mobile, email]
+        [username, formattedMobile, email]
       );
       await db.end();
       return new Response(JSON.stringify({ message: "Profile updated successfully" }), { status: 200 });
     } else {
       // Insert new user
+      const formattedMobile = mobile.startsWith("+91") ? mobile : `+91${mobile}`;
       await db.execute(
         "INSERT INTO users (username, email, mobile) VALUES (?, ?, ?)",
-        [username, email, mobile]
+        [username, email, formattedMobile]
       );
       await db.end();
       return new Response(JSON.stringify({ message: "User created successfully" }), { status: 201 });

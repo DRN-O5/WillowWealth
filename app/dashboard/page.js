@@ -4,12 +4,15 @@ import React from "react";
 import { useState } from "react";
 import ExpenseForm from "@/components/ExpenseForm";
 import ExpensesTable from "@/components/ExpenseTable";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import ProfileTab from "@/components/ProfileTab";
 import AreaChartComponent from "@/components/AreaChart";
 import PieChartComponent from "@/components/PieChart";
 import LineChartComponent from "@/components/LineChart";
 import StatementTable from "@/components/StatementTable";
+import BarChartComponent from "@/components/BarChart";
+import BudgetForm from "@/components/BudgetForm";
+import AlertsList from "@/components/AlertsList";
 
 const dashboard = () => {
   const { data: session, status } = useSession();
@@ -24,13 +27,11 @@ const dashboard = () => {
     switch (activeTab) {
       case "dashboard":
         return (
-          <div className="min-h-screen bg-gray-950 text-white p-8 space-y-12 rounded">
-            {/* Page Title */}
+          <div className=" bg-gray-950 text-white p-8 space-y-12 rounded min-h-full">
             <h1 className="text-3xl font-bold text-green-400 text-center">
               Dashboard
             </h1>
 
-            {/* Charts Section */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <div className="flex justify-center">
                 <AreaChartComponent />
@@ -41,19 +42,28 @@ const dashboard = () => {
               <div className="lg:col-span-2 flex justify-center">
                 <LineChartComponent />
               </div>
+              
+              <div>
+                <BarChartComponent />
+              </div>
+              <div>
+                <AlertsList userId={session?.user?.id}/>
+              </div>
             </div>
 
-            {/* Table Section */}
             <div className="pt-6">
               <ExpensesTable />
             </div>
           </div>
         );
-      case "expenses":
+      case "manage":
         return (
           <div>
             <div>
               <ExpenseForm />
+            </div>
+            <div className="mt-5">
+              <BudgetForm />
             </div>
           </div>
         );
@@ -77,18 +87,18 @@ const dashboard = () => {
   };
 
   return session ? (
-    <div className="mt-18">
-      <div className="flex min-h-screen">
+    <div>
+      <div className="flex mt-18 h-[calc(100vh-4.5rem)]">
         {/* Sidebar */}
-        <div className="w-1/5 bg-gray-900 border-r border-gray-700 p-6 flex flex-col text-white">
+        <div className="w-1/6 bg-gray-950 border-r border-gray-800 px-2 py-5 flex flex-col text-white sticky top-18 overflow-y-auto h-full custom-scrollbar">
           <h2 className="text-xl font-bold mb-6 ml-4">Menu</h2>
           <ul className="flex flex-col space-y-4">
             <li>
               <button
                 className={`w-full text-left px-4 py-2 rounded duration-100 ${
                   activeTab === "dashboard"
-                    ? "bg-gray-950"
-                    : "hover:bg-gray-950"
+                    ? "bg-black border border-green-400/40 text-green-400 hover:bg-gray-800 hover:border-green-400"
+                    : "border-green-400/40 text-white bg-gray-950 hover:bg-gray-800 hover:border-green-400 hover:text-green-400"
                 }`}
                 onClick={() => setActiveTab("dashboard")}
               >
@@ -98,19 +108,21 @@ const dashboard = () => {
             <li>
               <button
                 className={`w-full text-left px-4 py-2 rounded duration-100 ${
-                  activeTab === "expenses" ? "bg-gray-950" : "hover:bg-gray-950"
+                  activeTab === "manage"
+                    ? "bg-black border border-green-400/40 text-green-400 hover:bg-gray-800 hover:border-green-400"
+                    : "border-green-400/40 text-white bg-gray-950 hover:bg-gray-800 hover:border-green-400 hover:text-green-400"
                 }`}
-                onClick={() => setActiveTab("expenses")}
+                onClick={() => setActiveTab("manage")}
               >
-                Expenses
+                Manage
               </button>
             </li>
             <li>
               <button
                 className={`w-full text-left px-4 py-2 rounded duration-100 ${
                   activeTab === "statement"
-                    ? "bg-gray-950"
-                    : "hover:bg-gray-950"
+                    ? "bg-black border border-green-400/40 text-green-400 hover:bg-gray-800 hover:border-green-400"
+                    : "border-green-400/40 text-white bg-gray-950 hover:bg-gray-800 hover:border-green-400 hover:text-green-400"
                 }`}
                 onClick={() => setActiveTab("statement")}
               >
@@ -120,18 +132,30 @@ const dashboard = () => {
             <li>
               <button
                 className={`w-full text-left px-4 py-2 rounded duration-100 ${
-                  activeTab === "profile" ? "bg-gray-950" : "hover:bg-gray-950"
+                  activeTab === "profile"
+                    ? "bg-black border border-green-400/40 text-green-400 hover:bg-gray-800 hover:border-green-400"
+                    : "border-green-400/40 text-white bg-gray-950 hover:bg-gray-800 hover:border-green-400 hover:text-green-400"
                 }`}
                 onClick={() => setActiveTab("profile")}
               >
                 Profile
               </button>
             </li>
+            <li>
+              <button
+                className="w-full text-left px-4 py-2 rounded duration-100 border-green-400/40 text-white bg-gray-950 hover:bg-gray-800 hover:border-green-400 hover:text-red-400"
+                onClick={() => signOut({ callbackUrl: "/" })}
+              >
+                Logout
+              </button>
+            </li>
           </ul>
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 p-8 bg-black">{renderContent()}</div>
+        <div className="flex-1 p-8 bg-black overflow-y-auto h-full custom-scrollbar">
+          {renderContent()}
+        </div>
       </div>
     </div>
   ) : null;

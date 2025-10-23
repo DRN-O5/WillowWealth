@@ -70,7 +70,7 @@ const ProfileTab = () => {
             Mobile Number
           </label>
           <input
-            type="tel"
+            type="text"
             value={mobile}
             onChange={(e) => setMobile(e.target.value)}
             className="w-full rounded-lg bg-gray-900 border border-green-400/40 text-white px-3 py-2 focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400 transition-all"
