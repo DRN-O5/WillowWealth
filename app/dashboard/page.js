@@ -14,7 +14,7 @@ import BarChartComponent from "@/components/BarChart";
 import BudgetForm from "@/components/BudgetForm";
 import AlertsList from "@/components/AlertsList";
 
-const dashboard = () => {
+const Dashboard = () => {
   const { data: session, status } = useSession();
   const [activeTab, setActiveTab] = useState("dashboard");
   const isLoading = status === "loading";
@@ -161,4 +161,4 @@ const dashboard = () => {
   ) : null;
 };
 
-export default dashboard;
+export default Dashboard;

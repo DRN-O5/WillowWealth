@@ -41,7 +41,7 @@ export default function AlertsList({ userId }) {
 
   useEffect(() => {
     fetchAlerts();
-  }, []);
+  }, [fetchAlerts]);
 
   return (
     <div className="max-w-4xl bg-gray-950 border border-green-400/30 rounded-lg p-6 shadow-lg shadow-green-900/40 w-full mx-auto ">
