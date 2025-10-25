@@ -47,7 +47,7 @@ const Dashboard = () => {
                 <BarChartComponent />
               </div>
               <div>
-                <AlertsList userId={session?.user?.id}/>
+                {/* <AlertsList userId={session?.user?.id}/> */}
               </div>
             </div>
 
