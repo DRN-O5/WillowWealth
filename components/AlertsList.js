@@ -7,7 +7,7 @@ export default function AlertsList({ userId }) {
   // Fetch alerts from API
   const fetchAlerts = useCallback( async () => {
     try {
-      const res = await fetch("/api/alerts?display=true");
+      const res = await fetch(`/api/alerts?display=true&username=${userId}`);
       const data = await res.json();
 
       if (Array.isArray(data)) {

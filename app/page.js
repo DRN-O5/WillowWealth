@@ -1,6 +1,5 @@
 "use client"; // Required for React state in Next.js 13+ app directory
 
-import BenefitsSection from "@/components/BenefitContainer";
 import Link from "next/link";
 import BenefitContainer from "@/components/BenefitContainer";
 import Footer from "@/components/Footer";
