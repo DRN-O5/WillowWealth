@@ -9,7 +9,8 @@ export async function GET(req) {
     const username = searchParams.get("username");
     const display = searchParams.get("display");
 
-    const { db } = await import("@/lib/db");
+    const { getDB } = await import("@/lib/db");
+    const db = await getDB();
     const { sendSMS } = await import("@/lib/sendSMS");
 
     // ✅ Gracefully handle missing username (don’t throw!)
@@ -97,7 +98,8 @@ export async function GET(req) {
 
 export async function PATCH(req) {
   try {
-    const { db } = await import("@/lib/db");
+    const { getDB } = await import("@/lib/db");
+    const db = await getDB();
     const { alert_id, is_enabled } = await req.json();
     await db.query(
       `UPDATE alerts SET is_enabled = ? WHERE alert_id = ?`,

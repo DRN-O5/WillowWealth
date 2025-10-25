@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { getDB } from "@/lib/db";
 
 
 export async function GET() {
   try {
+    const db = await getDB();
     const [rows] = await db.query(`SELECT * FROM expenses ORDER BY date DESC`);
     return NextResponse.json(rows, { status: 200 });
   } catch (err) {
@@ -15,6 +16,7 @@ export async function GET() {
 
 export async function POST(request) {
   try {
+    const db = await getDB();
     const body = await request.json();
 
     const { description, transactionType, paymentMethod, amount } = body;

@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { getDB } from "@/lib/db";
 
 
 export async function GET() {
   try {
     // Fetch all expenses
+    const db = await getDB();
     const [expenses] = await db.query(
       "SELECT * FROM expenses ORDER BY date DESC"
     );

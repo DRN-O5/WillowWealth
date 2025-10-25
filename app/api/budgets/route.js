@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { getDB } from "@/lib/db";
 
 export async function POST(req) {
   const { category, budget_amount } = await req.json();
 
   try {
+    const db = await getDB();
     await db.query(
       `INSERT INTO budgets (user_id, category, budget_amount)
       VALUES (?, ?, ?)
@@ -24,6 +25,7 @@ export async function POST(req) {
 
 export async function GET() {
   try {
+    const db = await getDB();
     const [rows] = await db.query(`
       SELECT 
         b.category,
