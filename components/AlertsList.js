@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export default function AlertsList({ userId }) {
   const [alerts, setAlerts] = useState([]);
 
   // Fetch alerts from API
-  const fetchAlerts = async () => {
+  const fetchAlerts = useCallback( async () => {
     try {
       const res = await fetch("/api/alerts?display=true");
       const data = await res.json();
@@ -23,7 +23,7 @@ export default function AlertsList({ userId }) {
       console.error("Failed to fetch alerts:", err);
       setAlerts([]);
     }
-  };
+  }, []);
 
   // Toggle alert enable/disable
   const toggleAlert = async (id, currentState) => {

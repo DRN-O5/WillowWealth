@@ -5,7 +5,12 @@ import { sendSMS } from "@/lib/sendSMS"; // or sendWhatsAppMessage if you use Wh
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
+    const username = searchParams.get("username");
     const display = searchParams.get("display"); // ?display=true for UI
+
+    if (!username) {
+      return NextResponse.json({ error: "username is required" }, { status: 400 });
+    }
 
     if (display === "true") {
       // Fetch alerts for displaying in component
