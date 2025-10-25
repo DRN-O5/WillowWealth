@@ -43,7 +43,7 @@ const Navbar = () => {
 
         {session && (
           <>
-            <Link href="/dashboard">
+            <Link href="/Dashboard">
               <button className="px-5 py-2 rounded-lg border border-green-400/40 text-white bg-gray-900/70 hover:bg-gray-800 hover:border-green-400 hover:shadow-[0_0_10px_rgba(34,197,94,0.6)] hover:scale-105 transition-all duration-200 font-medium cursor-pointer">
                 Dashboard
               </button>

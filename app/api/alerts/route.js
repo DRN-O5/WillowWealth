@@ -1,19 +1,25 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { sendSMS } from "@/lib/sendSMS"; // or sendWhatsAppMessage if you use WhatsApp
+import { sendSMS } from "@/lib/sendSMS";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(req) {
   try {
-    const { searchParams } = new URL(req.url);
+    // ✅ Defensive parsing
+    const { searchParams } = new URL(req.url || "http://localhost");
     const username = searchParams.get("username");
-    const display = searchParams.get("display"); // ?display=true for UI
+    const display = searchParams.get("display");
 
+    // ✅ Gracefully handle missing username (don’t throw!)
     if (!username) {
-      return NextResponse.json({ error: "username is required" }, { status: 400 });
+      return NextResponse.json(
+        { message: "No username provided — skipping alert processing." },
+        { status: 200 }
+      );
     }
 
     if (display === "true") {
-      // Fetch alerts for displaying in component
       const [alerts] = await db.query(`
         SELECT id, user_id, category, message, is_enabled, sent_at
         FROM alerts
@@ -22,7 +28,6 @@ export async function GET(req) {
       return NextResponse.json(alerts);
     }
 
-    // Default GET: process alerts and send SMS/WhatsApp if thresholds reached
     const [rows] = await db.query(`
       SELECT 
         b.category,
@@ -59,7 +64,6 @@ export async function GET(req) {
       }
 
       if (alertType) {
-        // Avoid duplicate alerts for same month and type
         const [existingAlert] = await db.query(
           `
           SELECT * FROM alerts 
@@ -73,11 +77,10 @@ export async function GET(req) {
         );
 
         if (existingAlert.length === 0) {
-          if (mobile) await sendSMS(mobile, message); // send SMS
-          // await sendWhatsAppMessage(mobile, message); // optional: WhatsApp
-
+          if (mobile) await sendSMS(mobile, message);
           await db.query(
-            `INSERT INTO alerts (user_id, category, alert_type, message, is_enabled) VALUES (?, ?, ?, ?, TRUE)`,
+            `INSERT INTO alerts (user_id, category, alert_type, message, is_enabled)
+             VALUES (?, ?, ?, ?, TRUE)`,
             [user_id, category, alertType, message]
           );
         }
@@ -91,11 +94,13 @@ export async function GET(req) {
   }
 }
 
-// PATCH — Enable/disable alert
 export async function PATCH(req) {
   try {
     const { alert_id, is_enabled } = await req.json();
-    await db.query(`UPDATE alerts SET is_enabled = ? WHERE alert_id = ?`, [is_enabled, alert_id]);
+    await db.query(
+      `UPDATE alerts SET is_enabled = ? WHERE alert_id = ?`,
+      [is_enabled, alert_id]
+    );
     return NextResponse.json({ message: "Alert updated successfully" });
   } catch (err) {
     console.error("Update alert error:", err);
