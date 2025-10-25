@@ -12,7 +12,7 @@ export default function ExpensesForm() {
     amount: "",
   });
 
-  const transactionTypes = ["Misc", "Luxury", "Food", "Transport"];
+  const transactionTypes = ["Essentials", "Misc", "Luxury", "Food", "Transport"];
   const paymentMethods = [
     "Bank Transfer",
     "UPI",
