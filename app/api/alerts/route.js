@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { sendSMS } from "@/lib/sendSMS";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +8,9 @@ export async function GET(req) {
     const { searchParams } = new URL(req.url || "http://localhost");
     const username = searchParams.get("username");
     const display = searchParams.get("display");
+
+    const { db } = await import("@/lib/db");
+    const { sendSMS } = await import("@/lib/sendSMS");
 
     // ✅ Gracefully handle missing username (don’t throw!)
     if (!username) {
@@ -96,6 +97,7 @@ export async function GET(req) {
 
 export async function PATCH(req) {
   try {
+    const { db } = await import("@/lib/db");
     const { alert_id, is_enabled } = await req.json();
     await db.query(
       `UPDATE alerts SET is_enabled = ? WHERE alert_id = ?`,
