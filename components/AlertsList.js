@@ -24,7 +24,7 @@ export default function AlertsList({ userId }) {
       console.error("Failed to fetch alerts:", err);
       setAlerts([]);
     }
-  }, []);
+  }, [userId]);
 
   // Toggle alert enable/disable
   const toggleAlert = async (id, currentState) => {
