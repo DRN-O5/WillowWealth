@@ -1,11 +1,29 @@
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { NextResponse } from "next/server";
 import { getDB } from "@/lib/db";
 
 export async function POST(req) {
   const { category, budget_amount } = await req.json();
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   try {
     const db = await getDB();
+
+    const [user] = await db.execute("SELECT user_id FROM users WHERE email = ?", [
+      session.user.email,
+    ]);
+
+    if (!user || user.length === 0) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    const userId = user[0].user_id;
+
     await db.query(
       `INSERT INTO budgets (user_id, category, budget_amount)
       VALUES (?, ?, ?)
